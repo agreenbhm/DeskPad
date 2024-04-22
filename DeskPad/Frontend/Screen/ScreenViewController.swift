@@ -6,6 +6,18 @@ enum ScreenViewAction: Action {
 }
 
 class ScreenViewController: SubscriberViewController<ScreenViewData>, NSWindowDelegate {
+    let serialNum: UInt32
+
+    init(serialNum: UInt32) {
+        self.serialNum = serialNum
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func loadView() {
         view = NSView()
         view.wantsLayer = true
@@ -29,7 +41,9 @@ class ScreenViewController: SubscriberViewController<ScreenViewData>, NSWindowDe
         descriptor.sizeInMillimeters = CGSize(width: 1600, height: 1000)
         descriptor.productID = 0x1234
         descriptor.vendorID = 0x3456
-        descriptor.serialNum = 0x0001
+        // descriptor.serialNum = 0x0001
+        descriptor.serialNum = serialNum
+        // descriptor.serialNum = UInt32(Int.random(in: 0x1000 ... 0xFFFF))
 
         let display = CGVirtualDisplay(descriptor: descriptor)
         store.dispatch(ScreenViewAction.setDisplayID(display.displayID))
