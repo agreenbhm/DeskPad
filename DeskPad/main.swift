@@ -1,5 +1,7 @@
 import AppKit
 
+NSMenu.setMenuBarVisible(false)
+
 let app = NSApplication.shared
 let delegate = AppDelegate()
 app.delegate = delegate
